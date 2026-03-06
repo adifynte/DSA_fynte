@@ -1,0 +1,8 @@
+{
+    "method": "twoSum",
+    "params": [
+        { "name": "nums", "type": "int[]" },
+        { "name": "target", "type": "int" }
+    ],
+    "return": "int[]"
+}

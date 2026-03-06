@@ -11,6 +11,7 @@ usage() {
     echo "  lang:         java | python | js"
     echo ""
     echo "Example: ./new.sh leetcode two-sum java"
+    echo "         ./new.sh codeforces watermelon python"
     exit 1
 }
 
@@ -31,15 +32,15 @@ fi
 # Validate language and set template file
 case "$LANG" in
     java)
-        TEMPLATE="templates/java/Solution.java"
+        TEMPLATE="templates/$PLATFORM/java/Solution.java"
         SOLUTION_FILE="Solution.java"
         ;;
     python)
-        TEMPLATE="templates/python/solution.py"
+        TEMPLATE="templates/$PLATFORM/python/solution.py"
         SOLUTION_FILE="solution.py"
         ;;
     js)
-        TEMPLATE="templates/js/solution.js"
+        TEMPLATE="templates/$PLATFORM/js/solution.js"
         SOLUTION_FILE="solution.js"
         ;;
     *)
@@ -61,9 +62,18 @@ cp "$SCRIPT_DIR/$TEMPLATE" "$PROBLEM_DIR/$SOLUTION_FILE"
 touch "$PROBLEM_DIR/input.txt"
 touch "$PROBLEM_DIR/output.txt"
 
-echo "✅ Created $PLATFORM/$PROBLEM/"
-echo "   📄 $SOLUTION_FILE  — write your solution here"
-echo "   📥 input.txt       — paste test input"
-echo "   📤 output.txt      — paste expected output"
+if [ "$PLATFORM" = "leetcode" ]; then
+    cp "$SCRIPT_DIR/templates/leetcode/metadata.json" "$PROBLEM_DIR/metadata.json"
+    echo "✅ Created $PLATFORM/$PROBLEM/"
+    echo "   📄 $SOLUTION_FILE  — write your solution method here (LeetCode style)"
+    echo "   📋 metadata.json   — fill in method name, params, and return type"
+    echo "   📥 input.txt       — paste test input (one arg per line, JSON format)"
+    echo "   📤 output.txt      — paste expected output (JSON format)"
+else
+    echo "✅ Created $PLATFORM/$PROBLEM/"
+    echo "   📄 $SOLUTION_FILE  — write your solution here (stdin/stdout)"
+    echo "   📥 input.txt       — paste test input"
+    echo "   📤 output.txt      — paste expected output"
+fi
 echo ""
 echo "Run:  ./run.sh $PLATFORM/$PROBLEM"

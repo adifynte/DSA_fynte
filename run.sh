@@ -40,6 +40,9 @@ if [ ! -f "$OUTPUT_FILE" ]; then
     exit 1
 fi
 
+# Detect platform
+PLATFORM=$(echo "$1" | cut -d'/' -f1)
+
 # Auto-detect language
 LANG=""
 SOLUTION_FILE=""
@@ -65,26 +68,55 @@ echo -e "${YELLOW}▶ Running $1 ($LANG)${NC}"
 ACTUAL_OUTPUT=$(mktemp)
 trap "rm -f $ACTUAL_OUTPUT" EXIT
 
-# Run the solution
-case "$LANG" in
-    java)
-        # Compile
-        if ! javac "$PROBLEM_PATH/Solution.java" 2>&1; then
-            echo -e "${RED}❌ Compilation failed${NC}"
-            exit 1
-        fi
-        # Run
-        java -cp "$PROBLEM_PATH" Solution < "$INPUT_FILE" > "$ACTUAL_OUTPUT" 2>&1
-        # Clean up .class files
-        rm -f "$PROBLEM_PATH"/*.class
-        ;;
-    python)
-        python3 "$PROBLEM_PATH/solution.py" < "$INPUT_FILE" > "$ACTUAL_OUTPUT" 2>&1
-        ;;
-    js)
-        node "$PROBLEM_PATH/solution.js" < "$INPUT_FILE" > "$ACTUAL_OUTPUT" 2>&1
-        ;;
-esac
+if [ "$PLATFORM" = "leetcode" ]; then
+    # LeetCode mode: use shared runners
+    METADATA_FILE="$PROBLEM_PATH/metadata.json"
+    if [ ! -f "$METADATA_FILE" ]; then
+        echo -e "${RED}❌ metadata.json not found in $1${NC}"
+        echo "   LeetCode problems require a metadata.json file."
+        exit 1
+    fi
+
+    case "$LANG" in
+        java)
+            TEMP_DIR=$(mktemp -d)
+            trap "rm -rf $TEMP_DIR; rm -f $ACTUAL_OUTPUT" EXIT
+            cp "$SCRIPT_DIR/runners/java/LeetCodeRunner.java" "$TEMP_DIR/"
+            cp "$SCRIPT_DIR/runners/java/TreeNode.java" "$TEMP_DIR/"
+            cp "$SCRIPT_DIR/runners/java/ListNode.java" "$TEMP_DIR/"
+            cp "$PROBLEM_PATH/Solution.java" "$TEMP_DIR/"
+            if ! javac "$TEMP_DIR"/*.java 2>&1; then
+                echo -e "${RED}❌ Compilation failed${NC}"
+                exit 1
+            fi
+            java -cp "$TEMP_DIR" LeetCodeRunner "$PROBLEM_PATH" > "$ACTUAL_OUTPUT" 2>&1
+            ;;
+        python)
+            python3 "$SCRIPT_DIR/runners/python/leetcode_runner.py" "$PROBLEM_PATH" > "$ACTUAL_OUTPUT" 2>&1
+            ;;
+        js)
+            node "$SCRIPT_DIR/runners/js/leetcode_runner.js" "$PROBLEM_PATH" > "$ACTUAL_OUTPUT" 2>&1
+            ;;
+    esac
+else
+    # Codeforces mode: stdin/stdout pipe
+    case "$LANG" in
+        java)
+            if ! javac "$PROBLEM_PATH/Solution.java" 2>&1; then
+                echo -e "${RED}❌ Compilation failed${NC}"
+                exit 1
+            fi
+            java -cp "$PROBLEM_PATH" Solution < "$INPUT_FILE" > "$ACTUAL_OUTPUT" 2>&1
+            rm -f "$PROBLEM_PATH"/*.class
+            ;;
+        python)
+            python3 "$PROBLEM_PATH/solution.py" < "$INPUT_FILE" > "$ACTUAL_OUTPUT" 2>&1
+            ;;
+        js)
+            node "$PROBLEM_PATH/solution.js" < "$INPUT_FILE" > "$ACTUAL_OUTPUT" 2>&1
+            ;;
+    esac
+fi
 
 # Compare output (ignore trailing whitespace/newlines)
 EXPECTED=$(sed -e 's/[[:space:]]*$//' "$OUTPUT_FILE" | sed -e '/^$/d')

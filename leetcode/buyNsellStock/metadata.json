@@ -1,0 +1,7 @@
+{
+    "method": "maxProfit",
+    "params": [
+        { "name": "prices", "type": "int[]" }
+    ],
+    "return": "int"
+}

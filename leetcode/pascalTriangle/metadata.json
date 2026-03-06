@@ -1,0 +1,7 @@
+{
+    "method": "generate",
+    "params": [
+        { "name": "numRows", "type": "int" }
+    ],
+    "return": "List<List<Integer>>"
+}

@@ -1,16 +1,12 @@
-import sys
-input = sys.stdin.readline
+from typing import List
 
-def solve():
-    nums = list(map(int, input().split()))
-    target = int(input())
-    lookup = {}
-    for i, num in enumerate(nums):
-        complement = target - num
-        if complement in lookup:
-            print(lookup[complement], i)
-            return
-        lookup[num] = i
 
-if __name__ == "__main__":
-    solve()
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        lookup = {}
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in lookup:
+                return [lookup[complement], i]
+            lookup[num] = i
+        return []
