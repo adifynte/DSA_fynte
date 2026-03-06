@@ -1,0 +1,7 @@
+{
+    "method": "sortColors",
+    "params": [
+        { "name": "nums", "type": "int[]" }
+    ],
+    "return": "int[]"
+}
