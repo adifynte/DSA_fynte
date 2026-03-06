@@ -16,20 +16,36 @@ To consistently practice and master challenging algorithmic problems, build stro
 
 ```
 DSA_fynte/
-├── run.sh                  # Test runner (auto-detects language)
+├── run.sh                  # Test runner (auto-detects language & platform)
 ├── new.sh                  # Problem scaffolding
-├── templates/              # Boilerplate templates
-│   ├── java/Solution.java
-│   ├── python/solution.py
-│   └── js/solution.js
+├── runners/                # Shared LeetCode runners (input parsing, method invocation)
+│   ├── java/
+│   │   ├── LeetCodeRunner.java
+│   │   ├── TreeNode.java
+│   │   └── ListNode.java
+│   ├── python/
+│   │   └── leetcode_runner.py
+│   └── js/
+│       └── leetcode_runner.js
+├── templates/
+│   ├── leetcode/           # LeetCode-style templates (method-only, no I/O)
+│   │   ├── java/Solution.java
+│   │   ├── python/solution.py
+│   │   ├── js/solution.js
+│   │   └── metadata.json
+│   └── codeforces/         # Codeforces-style templates (stdin/stdout)
+│       ├── java/Solution.java
+│       ├── python/solution.py
+│       └── js/solution.js
 ├── leetcode/
 │   └── <problem-name>/
-│       ├── solution.py     # (or Solution.java / solution.js)
-│       ├── input.txt
-│       └── output.txt
+│       ├── Solution.java   # (or solution.py / solution.js)
+│       ├── metadata.json   # Method name, param types, return type
+│       ├── input.txt       # JSON-format input (one arg per line)
+│       └── output.txt      # JSON-format expected output
 └── codeforces/
     └── <problem-name>/
-        ├── Solution.java
+        ├── Solution.java   # (or solution.py / solution.js)
         ├── input.txt
         └── output.txt
 ```
@@ -48,14 +64,58 @@ DSA_fynte/
 
 ```bash
 ./new.sh leetcode two-sum python
+./new.sh codeforces watermelon java
 ```
 
 ### 2. Write your solution
-Open the generated solution file and implement the `solve()` function. Input is read from **stdin**, output goes to **stdout**.
+
+**LeetCode** — Write just the solution method, exactly like on leetcode.com:
+```java
+// Solution.java
+public class Solution {
+    public int maxProfit(int[] prices) {
+        // your solution here
+    }
+}
+```
+```python
+# solution.py
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # your solution here
+```
+
+Then fill in `metadata.json` with the method signature:
+```json
+{
+    "method": "maxProfit",
+    "params": [
+        { "name": "prices", "type": "int[]" }
+    ],
+    "return": "int"
+}
+```
+
+**Codeforces** — Read from stdin, write to stdout (unchanged):
+```java
+public class Solution {
+    public static void solve(Scanner sc, PrintWriter out) {
+        // read input, write output
+    }
+}
+```
 
 ### 3. Add test data
-- Paste sample input into `input.txt`
-- Paste expected output into `output.txt`
+
+**LeetCode** — Use JSON format, one argument per line:
+```
+[7,1,5,3,6,4]
+```
+```
+5
+```
+
+**Codeforces** — Use raw stdin/stdout format as on the site.
 
 ### 4. Run and validate
 ```bash
@@ -65,6 +125,27 @@ Open the generated solution file and implement the `solve()` function. Input is 
 ./run.sh leetcode/two-sum
 # ✅ PASS  or  ❌ FAIL (with diff)
 ```
+
+---
+
+## 📋 Supported LeetCode Types
+
+The runners support parsing and serializing these types in `metadata.json`:
+
+| Type | Example Input |
+|------|--------------|
+| `int` | `5` |
+| `double` | `3.14` |
+| `boolean` | `true` |
+| `String` | `"hello"` |
+| `int[]` | `[1,2,3]` |
+| `int[][]` | `[[1,2],[3,4]]` |
+| `String[]` | `["a","b"]` |
+| `List<Integer>` | `[1,2,3]` |
+| `List<String>` | `["a","b"]` |
+| `List<List<Integer>>` | `[[1],[1,1]]` |
+| `TreeNode` | `[1,2,3,null,5]` |
+| `ListNode` | `[1,2,3,4]` |
 
 ---
 
