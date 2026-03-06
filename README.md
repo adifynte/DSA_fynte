@@ -16,22 +16,63 @@ To consistently practice and master challenging algorithmic problems, build stro
 
 ```
 DSA_fynte/
-├── LeetCode/
-│   ├── Arrays/
-│   ├── Strings/
-│   ├── Trees/
-│   ├── Graphs/
-│   ├── Dynamic_Programming/
-│   ├── Backtracking/
-│   └── ...
-├── Codeforces/
-│   ├── Div2/
-│   ├── Div3/
-│   └── Educational/
-└── Notes/
-    ├── Patterns.md
-    └── Templates.md
+├── run.sh                  # Test runner (auto-detects language)
+├── new.sh                  # Problem scaffolding
+├── templates/              # Boilerplate templates
+│   ├── java/Solution.java
+│   ├── python/solution.py
+│   └── js/solution.js
+├── leetcode/
+│   └── <problem-name>/
+│       ├── solution.py     # (or Solution.java / solution.js)
+│       ├── input.txt
+│       └── output.txt
+└── codeforces/
+    └── <problem-name>/
+        ├── Solution.java
+        ├── input.txt
+        └── output.txt
 ```
+
+---
+
+## 🚀 Quick Start
+
+### 1. Scaffold a new problem
+```bash
+./new.sh <platform> <problem-name> <lang>
+```
+- **platform:** `leetcode` or `codeforces`
+- **problem-name:** kebab-case (e.g., `two-sum`)
+- **lang:** `java`, `python`, or `js`
+
+```bash
+./new.sh leetcode two-sum python
+```
+
+### 2. Write your solution
+Open the generated solution file and implement the `solve()` function. Input is read from **stdin**, output goes to **stdout**.
+
+### 3. Add test data
+- Paste sample input into `input.txt`
+- Paste expected output into `output.txt`
+
+### 4. Run and validate
+```bash
+./run.sh <platform>/<problem-name>
+```
+```bash
+./run.sh leetcode/two-sum
+# ✅ PASS  or  ❌ FAIL (with diff)
+```
+
+---
+
+## 🛠️ Requirements
+
+- **Java** (JDK 11+) for Java solutions
+- **Python 3** for Python solutions
+- **Node.js** for JavaScript solutions
 
 ---
 
@@ -43,17 +84,6 @@ Each solution includes:
 - **Tags** (e.g., DP, Graph, BFS, Greedy)
 - **Time & Space Complexity**
 - **Approach Notes**
-
----
-
-## 📊 Progress Tracker
-
-| Platform | Solved | Easy | Medium | Hard |
-|----------|--------|------|--------|------|
-| LeetCode | 0 | 0 | 0 | 0 |
-| Codeforces | 0 | - | - | - |
-
-*(Updated regularly)*
 
 ---
 
