@@ -4,4 +4,5 @@
         { "name": "numRows", "type": "int" }
     ],
     "return": "List<List<Integer>>"
+    "url": "https://leetcode.com/problems/pascals-triangle/"
 }

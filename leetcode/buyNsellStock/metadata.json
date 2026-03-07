@@ -3,5 +3,6 @@
     "params": [
         { "name": "prices", "type": "int[]" }
     ],
-    "return": "int"
+    "return": "int",
+    "url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"
 }

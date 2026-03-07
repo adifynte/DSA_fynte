@@ -1,0 +1,8 @@
+{
+    "method": "nextPermutation",
+    "params": [
+        { "name": "nums", "type": "int[]" }
+    ],
+    "return": "int[]",
+    "url": "https://leetcode.com/problems/next-permutation/"
+}
