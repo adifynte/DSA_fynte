@@ -3,6 +3,6 @@
     "params": [
         { "name": "numRows", "type": "int" }
     ],
-    "return": "List<List<Integer>>"
+    "return": "List<List<Integer>>",
     "url": "https://leetcode.com/problems/pascals-triangle/"
 }
