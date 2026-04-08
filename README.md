@@ -2,13 +2,7 @@
 
 > *Sharpen the blade. One problem at a time.*
 
-A curated collection of **Data Structures & Algorithms** solutions from **Codeforces** and **LeetCode** — solved with clarity, optimized for performance, and documented for learning.
-
----
-
-## 🎯 Goal
-
-To consistently practice and master challenging algorithmic problems, build strong problem-solving intuition, and document the journey from brute force to optimal.
+A curated collection of **Data Structures & Algorithms** solutions from **Codeforces**, **LeetCode**, and **Educative**.
 
 ---
 
@@ -16,121 +10,72 @@ To consistently practice and master challenging algorithmic problems, build stro
 
 ```
 DSA_fynte/
-├── run.sh                  # Test runner (auto-detects language & platform)
-├── new.sh                  # Problem scaffolding
-├── runners/                # Shared LeetCode runners (input parsing, method invocation)
+├── setup.sh / setup.cmd    # First-time dependency install
+├── run.sh   / run.cmd      # Test runner (auto-detects language & platform)
+├── new.sh   / new.cmd      # Problem scaffolding
+├── runners/                # Shared LeetCode/Educative runners
 │   ├── java/
-│   │   ├── LeetCodeRunner.java
-│   │   ├── TreeNode.java
-│   │   └── ListNode.java
 │   ├── python/
-│   │   └── leetcode_runner.py
-│   └── js/
-│       └── leetcode_runner.js
+│   ├── js/
+│   └── cpp/
 ├── templates/
 │   ├── leetcode/           # LeetCode-style templates (method-only, no I/O)
-│   │   ├── java/Solution.java
-│   │   ├── python/solution.py
-│   │   ├── js/solution.js
-│   │   └── metadata.json
+│   ├── educative/          # Educative-style templates (method-only, no I/O)
 │   └── codeforces/         # Codeforces-style templates (stdin/stdout)
-│       ├── java/Solution.java
-│       ├── python/solution.py
-│       └── js/solution.js
 ├── leetcode/
-│   └── <problem-name>/
-│       ├── Solution.java   # (or solution.py / solution.js)
-│       ├── metadata.json   # Method name, param types, return type
-│       ├── input.txt       # JSON-format input (one arg per line)
-│       └── output.txt      # JSON-format expected output
+├── educative/
 └── codeforces/
-    └── <problem-name>/
-        ├── Solution.java   # (or solution.py / solution.js)
-        ├── input.txt
-        └── output.txt
 ```
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Scaffold a new problem
+### 1. First-time setup (required after clone)
 ```bash
-./new.sh <platform> <problem-name> <lang>
+./setup.sh          # Git Bash / Linux / macOS
+.\setup.cmd         # Windows PowerShell / CMD (same terminal)
 ```
-- **platform:** `leetcode` or `codeforces`
+
+### 2. Scaffold a new problem
+```bash
+./new.sh <platform> <problem-name> <lang>         # Git Bash
+.\new.cmd <platform> <problem-name> <lang>         # Windows
+```
+- **platform:** `leetcode`, `educative`, or `codeforces`
 - **problem-name:** kebab-case (e.g., `two-sum`)
-- **lang:** `java`, `python`, or `js`
+- **lang:** `java`, `python`, `js`, or `cpp`
 
 ```bash
-./new.sh leetcode two-sum python
+./new.sh leetcode two-sum cpp
+./new.sh educative longest-substring python
 ./new.sh codeforces watermelon java
 ```
 
-### 2. Write your solution
+### 3. Write your solution
 
-**LeetCode** — Write just the solution method, exactly like on leetcode.com:
-```java
-// Solution.java
-public class Solution {
-    public int maxProfit(int[] prices) {
-        // your solution here
-    }
-}
-```
-```python
-# solution.py
-class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        # your solution here
-```
+- **LeetCode / Educative**: method-only style + `metadata.json`
+- **Codeforces**: stdin/stdout style
 
-Then fill in `metadata.json` with the method signature:
-```json
-{
-    "method": "maxProfit",
-    "params": [
-        { "name": "prices", "type": "int[]" }
-    ],
-    "return": "int"
-}
-```
+### 4. Add test data
 
-**Codeforces** — Read from stdin, write to stdout (unchanged):
-```java
-public class Solution {
-    public static void solve(Scanner sc, PrintWriter out) {
-        // read input, write output
-    }
-}
-```
+- **LeetCode / Educative**: JSON input (one argument per line), JSON output
+- **Codeforces**: raw stdin/stdout format
 
-### 3. Add test data
-
-**LeetCode** — Use JSON format, one argument per line:
-```
-[7,1,5,3,6,4]
-```
-```
-5
-```
-
-**Codeforces** — Use raw stdin/stdout format as on the site.
-
-### 4. Run and validate
+### 5. Run and validate
 ```bash
-./run.sh <platform>/<problem-name>
+./run.sh <platform>/<problem-name>         # Git Bash
+.\run.cmd <platform>/<problem-name>        # Windows PowerShell / CMD
 ```
 ```bash
-./run.sh leetcode/two-sum
-# ✅ PASS  or  ❌ FAIL (with diff)
+.\run.cmd leetcode/two-sum
+.\run.cmd educative/longest-substring
+.\run.cmd codeforces/watermelon
 ```
 
 ---
 
-## 📋 Supported LeetCode Types
-
-The runners support parsing and serializing these types in `metadata.json`:
+## 📋 Supported Metadata Types (LeetCode / Educative)
 
 | Type | Example Input |
 |------|--------------|
@@ -149,47 +94,15 @@ The runners support parsing and serializing these types in `metadata.json`:
 
 ---
 
-## 🛠️ Requirements
+## 🛠️ Tooling
 
-- **Java** (JDK 11+) for Java solutions
-- **Python 3** for Python solutions
-- **Node.js** for JavaScript solutions
+`setup.sh` installs the required toolchain:
 
----
-
-## 🏷️ Problem Tagging
-
-Each solution includes:
-- **Platform** (LeetCode / Codeforces)
-- **Difficulty** (Easy / Medium / Hard / Rating)
-- **Tags** (e.g., DP, Graph, BFS, Greedy)
-- **Time & Space Complexity**
-- **Approach Notes**
-
----
-
-## 🧠 Key Topics
-
-- Arrays & Strings
-- Linked Lists & Stacks/Queues
-- Trees & Graphs (BFS/DFS)
-- Dynamic Programming
-- Greedy Algorithms
-- Binary Search
-- Sliding Window & Two Pointers
-- Bit Manipulation
-- Segment Trees & Fenwick Trees
-
----
-
-## 🚀 Getting Started
-
-Clone and explore solutions:
-
-```bash
-git clone https://github.com/adifynte/DSA_fynte.git
-cd DSA_fynte
-```
+- Java (JDK)
+- Python 3
+- Node.js + npm
+- C++ compiler (`g++`)
+- npm project dependencies
 
 ---
 

@@ -6,11 +6,12 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 usage() {
     echo "Usage: ./new.sh <platform> <problem-name> <lang>"
     echo ""
-    echo "  platform:     leetcode | codeforces"
+    echo "  platform:     leetcode | educative | codeforces"
     echo "  problem-name: kebab-case name (e.g., two-sum)"
-    echo "  lang:         java | python | js"
+    echo "  lang:         java | python | js | cpp"
     echo ""
     echo "Example: ./new.sh leetcode two-sum java"
+    echo "         ./new.sh educative longest-substring python"
     echo "         ./new.sh codeforces watermelon python"
     exit 1
 }
@@ -24,8 +25,8 @@ PROBLEM="$2"
 LANG="$3"
 
 # Validate platform
-if [[ "$PLATFORM" != "leetcode" && "$PLATFORM" != "codeforces" ]]; then
-    echo "❌ Invalid platform: $PLATFORM (must be leetcode or codeforces)"
+if [[ "$PLATFORM" != "leetcode" && "$PLATFORM" != "educative" && "$PLATFORM" != "codeforces" ]]; then
+    echo "❌ Invalid platform: $PLATFORM (must be leetcode, educative, or codeforces)"
     exit 1
 fi
 
@@ -43,8 +44,12 @@ case "$LANG" in
         TEMPLATE="templates/$PLATFORM/js/solution.js"
         SOLUTION_FILE="solution.js"
         ;;
+    cpp)
+        TEMPLATE="templates/$PLATFORM/cpp/solution.cpp"
+        SOLUTION_FILE="solution.cpp"
+        ;;
     *)
-        echo "❌ Invalid language: $LANG (must be java, python, or js)"
+        echo "❌ Invalid language: $LANG (must be java, python, js, or cpp)"
         exit 1
         ;;
 esac
@@ -62,10 +67,10 @@ cp "$SCRIPT_DIR/$TEMPLATE" "$PROBLEM_DIR/$SOLUTION_FILE"
 touch "$PROBLEM_DIR/input.txt"
 touch "$PROBLEM_DIR/output.txt"
 
-if [ "$PLATFORM" = "leetcode" ]; then
-    cp "$SCRIPT_DIR/templates/leetcode/metadata.json" "$PROBLEM_DIR/metadata.json"
+if [ "$PLATFORM" = "leetcode" ] || [ "$PLATFORM" = "educative" ]; then
+    cp "$SCRIPT_DIR/templates/$PLATFORM/metadata.json" "$PROBLEM_DIR/metadata.json"
     echo "✅ Created $PLATFORM/$PROBLEM/"
-    echo "   📄 $SOLUTION_FILE  — write your solution method here (LeetCode style)"
+    echo "   📄 $SOLUTION_FILE  — write your solution method here (LeetCode/Educative style)"
     echo "   📋 metadata.json   — fill in method name, params, and return type"
     echo "   📥 input.txt       — paste test input (one arg per line, JSON format)"
     echo "   📤 output.txt      — paste expected output (JSON format)"
